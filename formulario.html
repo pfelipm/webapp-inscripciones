@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+  
+    <base target="_top">
+
+    <!-- Inserta código css parametrizado -->
+    <?
+      const css = HtmlService.createTemplateFromFile('css');
+      const hdc = SpreadsheetApp.getActive();
+      css.colorTema = hdc.getRange(PARAM.colorTema).getValue();
+      css.anchoImagen = hdc.getRange(PARAM.anchoImagen).getValue();
+    ?>
+    <?!= css.evaluate().getContent(); ?>
+
+  </head>
+  
+  <body>
+    
+    <div class="container">
+
+      <!-- Elementos del encabezado parametrizados desde doGet() -->
+
+      <img src="<?= imagenCabecera ?>">
+      <h<?= tamEncabezado ?>><?= textoEncabezado ?></h<?!= tamEncabezado ?>>
+
+
+    <!-- ¿Formulario en mantenimiento ? -->
+
+    <? if (hdc.getRange(PARAM.checkMantenimiento).getValue()) { ?>
+      
+      <p class="instrucciones">🛠️ El formulario está temporalmente desactivado por labores de mantenimiento 🛠️</p>
+
+    <? } else { ?>
+
+    <!-- ¿Formulario abierto o cerrado? -->
+
+    <?
+      const checkActivar = hdc.getRange(PARAM.checkActivar).getValue();
+      const apertura = hdc.getRange(PARAM.apertura).getValue();
+      const cierre = hdc.getRange(PARAM.cierre).getValue();
+      const checkPeriodo = hdc.getRange(PARAM.checkPeriodo).getValue();
+      const ahora = new Date();
+      const formularioAbierto = checkPeriodo ? (ahora >= apertura && ahora < cierre ? true : false) : checkActivar;
+      if (!formularioAbierto) {
+    ?>
+
+      <p class="instrucciones"><?!= hdc.getRange(PARAM.textoCerrado).getValue() ?></p>
+      
+      </div> <!-- Container -->
+      </body>
+      </html>
+      <!-- ¡Y se acabó! -->
+    
+    <? } else { ?>
+    
+      <p class="instrucciones"><?!= hdc.getRange(PARAM.textoAbierto).getValue() ?></p>
+  
+      <form id="formulario">
+
+        <!-- Inserta código HTML para mostrar los campos de identificación y el botón del formulario -->
+        <?
+          const campos = hdc.getRange(PARAM.camposId.rango).getValues();
+          const camposGenerar = PARAM.camposId.cols.filter(col => campos[PARAM.camposId.etiquetaCol][col]);
+          camposGenerar.forEach((campo, indice) => {
+            if (camposGenerar.length == 1)  { ?>
+              <div class="row">
+                <div class="input-field col s6 offset-s3 l4 offset-l4 campoUnico">
+            <? } else if (indice % 2 == 0 && camposGenerar.length > 1)  { ?>
+              <div class="row">
+                <div class="input-field col s5 offset-s1 l4 offset-l2 xl3 offset-xl3 campoIzq">
+            <? } else { ?>
+                <div class="input-field col s5 l4 xl3 campoDer">
+            <? } ?>
+                  <i class="material-icons prefix"><?= campos[PARAM.camposId.iconoCol][campo] ?></i>
+                  <input pattern="<?= campos[PARAM.camposId.expRegCol][campo] ?>" id="<?= `campo${indice+1}` ?>" name="<?= `campo${indice+1}` ?>" type="text"
+                  required aria-required="true" <?!= campos[PARAM.camposId.expRegCol][campo] ? 'class="validate"' : ''?>>
+                  <label for="<?= `campo${indice+1}` ?>"><?= campos[PARAM.camposId.etiquetaCol][campo] ?></label>
+                  <span class="helper-text" data-error="<?= campos[PARAM.camposId.txtValCol][campo] ?>"><?= campos[PARAM.camposId.ayudaCol][campo] ?></span>
+                </div>
+            <? if (indice % 2 == 0 && indice + 1 == camposGenerar.length || indice % 2 == 1)  { ?>
+              </div>
+            <? }
+          });
+        ?>
+
+        <!-- Botón de inscripción -->
+        <div id="div_btn_guardar" class="row center-align">
+          <button type="submit" disabled id="btn_guardar" class="btn waves-effect waves-light btn-large"><i class="material-icons left"><?= btnIcono ?></i><?= btnEtiqueta ?></a>
+        </div>
+
+        <div class="mensaje hide" id="mensaje"></div>
+
+        <div class="progress" id="barraProgreso">
+          <div class="indeterminate" style="width: 70%"></div>
+        </div>
+        
+        <!-- Pestañas de selección de talleres -->
+        <div class="row" id="tabArea">
+
+        </div>
+
+      </form>
+
+    </div> <!-- Container -->
+  
+  </body>
+
+  <!-- Inserta código JavaScript -->
+  <?!= HtmlService.createHtmlOutputFromFile('js').getContent(); ?>
+
+
+</html>
+
+<? } }?>   

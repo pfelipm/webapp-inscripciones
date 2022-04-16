@@ -1,0 +1,293 @@
+<!-- Materialize -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script>
+
+    /**
+     * Inicialización
+     */
+
+    let formularioReactivable = false;
+    const tabSwipeable = true;
+    let tab;
+    let resizeTimer;
+    const $ = id => document.getElementById(id);
+    window.addEventListener('DOMContentLoaded', () => {
+
+      // Recomponer formulario
+      ajustarFormulario();
+
+      // Carga lista de talleres y plazas desde la hdc
+      cargarTalleres();
+
+      // Manejadores de eventos
+      $('formulario').addEventListener('submit',guardarSeleccion);
+      Array.from(document.getElementsByTagName('input')).forEach(elemento => elemento.addEventListener('focus', reactivarFormulario));
+    });
+
+    window.addEventListener('resize', ajustarFormulario);
+   
+
+    function ajustarFormulario() {
+
+      // Se usa un temporizador de retardo para reducir la frecuencia de incialización del
+      // componente Tab, de lo contrario acaba rompiéndose y sus DIVs (grupos)
+      // se muestran apilados.
+      window.clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+
+        const camposIzq = Array.from(document.getElementsByClassName('campoIzq'));
+        const camposDer = Array.from(document.getElementsByClassName('campoDer'));
+        const campoUnico = Array.from(document.getElementsByClassName('campoUnico'));
+        const nombresTalleres = Array.from(document.getElementsByClassName('nombreTalleres'));
+        if (window.innerWidth <= 600) {
+          camposIzq.forEach(c => {
+            c.classList.add('s12');
+            c.classList.remove('s5');
+            c.classList.remove('offset-s1');
+          });
+          camposDer.forEach(c => {
+            c.classList.add('s12');
+            c.classList.remove('s5');
+          });
+          if(campoUnico.length > 0) {
+            campoUnico[0].classList.add('s12');
+            campoUnico[0].classList.remove('s6');
+            campoUnico[0].classList.remove('offset-s3');
+          }
+        } else {
+          camposIzq.forEach(c => {
+            c.classList.remove('s12');
+            c.classList.add('s5');
+            c.classList.add('offset-s1');
+          });
+          camposDer.forEach(c => {
+            c.classList.add('s5');
+            c.classList.remove('s12');
+          });
+          if (campoUnico.length > 0) {
+            campoUnico[0].classList.remove('s12');
+            campoUnico[0].classList.add('s6');
+            campoUnico[0].classList.add('offset-s3');
+          }
+        }
+
+        if (tab) {
+          tab = M.Tabs.init($('tabs'), {swipeable: tabSwipeable});
+          // No parece ser necesario
+          // tab.updateTabIndicator();
+        }
+
+      }, 250);
+    }
+    
+    /**
+     * Carga y muestra lista de talleres
+     */
+    function cargarTalleres() {
+      
+      $('btn_guardar').disabled = true;
+      $('barraProgreso').style.visibility = 'visible';
+      fadeInOut('tabArea', false);
+      
+      google.script.run
+        .withSuccessHandler(htmlPayLoad => {
+
+          $('tabArea').innerHTML = htmlPayLoad;
+          // {swipeable: true} da problemas con la altura (deja elementos fuera), fix usado,
+          // https://github.com/Dogfalo/materialize/issues/4159#issuecomment-513043218
+          tab = M.Tabs.init($('tabs'), {swipeable: tabSwipeable});
+          $('barraProgreso').style.visibility = 'hidden';
+          $('btn_guardar').disabled = false;
+          $('div_btn_guardar').classList.remove('hide');
+          fadeInOut('tabArea', true);
+
+        })
+        .withFailureHandler(error => {
+
+          $('tabArea').innerHTML = '<p class="center-align red-text text-accent-3>Error desconocido al cargar lista de talleres, por favor, recarga la página: </p>' + error;
+
+        })
+        .cargarTalleres();
+    }
+
+    /**
+     * Guarda en el lado del servidor el taller seleccionado
+     */
+    function guardarSeleccion(e) {
+
+      // Desactiva botón de envío
+      $('btn_guardar').disabled = true;
+      
+      // Evita comportamiento predeterminado del envío del formulario
+      e.preventDefault();  
+
+      // Comprueba si se ha seleccionado al menos una opción por grupo de talleres,
+      // no lo puedo hacer tirando de validación estándar <input type="radio" required>
+      // por glitch visual en el componente Tabs al mostrar texto de validación.
+      const radios = Array.from(document.querySelectorAll('input[type=radio]'));
+      const grupos = Array.from(new Set(radios.map(radio => radio.name)));
+      
+      if (grupos.every(grupo => radios
+        .filter(radio => radio.name == grupo)
+        .some(radio => radio.checked))) {
+
+        // Se ha escogido 1 opción por grupo, enviamos al servidor
+
+        M.toast({html:'Enviando datos...', classes: 'rounded'});
+        $('barraProgreso').style.visibility = 'visible';
+        google.script.run
+        .withSuccessHandler(resultado => {
+
+          // Se ocultan botón y barra de progreso
+          $('div_btn_guardar').classList.add('hide');
+          $('barraProgreso').style.visibility = 'hidden';
+
+          switch (resultado.estado) {
+
+            // Todo ha ido bien, selección de talleres guardada
+            case 'ok':
+              toast(resultado.previas ? '🎉 ¡Inscripción previa actualizada! 🎉' : '🎉 ¡Inscripción realizada! 🎉');
+              desactivarFormulario('formulario');
+              formularioReactivable = false;
+              muestraMensaje(resultado.mensaje, 'ok');
+            break;
+
+            // El formulario se ha cerrado mientras el usuario se decidía
+            case 'cerrado':
+              toast('🛑 ¡Formulario cerrado! 🛑');
+              desactivarFormulario('formulario');
+              formularioReactivable = false;
+              muestraMensaje(resultado.mensaje, 'ko');
+            break;
+
+            // No se ha superado la autenticación
+            case 'no autorizado':
+              toast('🛑 ¡No autorizado! 🛑');
+              formularioReactivable = true;
+              muestraMensaje(resultado.mensaje, 'ko');
+            break;
+
+            // Se está intentando realizar una nueva selección no permitida          
+            case 'repetido':
+              toast('🛑 ¡Inscripción ya realizada anteriormente! 🛑');
+              desactivarFormulario('formulario');
+              formularioReactivable = false;
+              muestraMensaje(resultado.mensaje, 'ko');
+            break;
+
+            // Se intenta realizar una nueva selección pero se ha fallado la autenticación
+            case 'fallo identidad modificar':
+              toast('🛑 ¡Fallo de autenticación al hacer una nueva selección! 🛑');
+              formularioReactivable = true;
+              muestraMensaje(resultado.mensaje, 'ko');
+            break;
+
+            case 'cambios':
+            
+            // Cambios en la disponibilidad mientras se realizaba la selección
+            toast('🛑 ¡La disponibilidad de los talleres ha cambiado! 🛑');
+            formularioReactivable = true;
+            muestraMensaje(resultado.mensaje, 'ko');
+            cargarTalleres();
+            break;
+
+            default:
+
+            // Otros estados de error
+              toast(`😱 ¡Algo inesperado ha ido mal! 😱<br>${resultado.mensaje}`, 10000);
+              formularioReactivable = true;
+              reactivarFormulario();
+            break;
+
+          }
+
+        })
+        .withFailureHandler(error => {
+
+          // Típicamente solo si se excede el nº máximo de scripts concurrentes
+          toast('⚠️ ¡No ha sido posible realizar tu reserva, inténtalo de nuevo en unos instantes! ⚠️', 10000);
+          formularioReactivable = true;
+          $('barraProgreso').style.visibility = 'hidden';
+          formularioReactivable = true;
+          reactivarFormulario();
+
+        })
+        .guardarSeleccion($('formulario'));
+
+      } else {
+
+        toast('❌ ¡Aún no has seleccionado un taller de cada grupo! ❌');
+        $('btn_guardar').disabled = false;
+
+      }
+
+    }
+
+    // ----------------------------
+    // Algunas funciones auxiliares
+    // ----------------------------
+
+    /**
+     * Muestra un mensaje de texto en el DIV de resultado de la operación
+     * @param {string}  mensaje
+     * @param {string}  clase "ok" (fondo verde) o "ko" (fondo rojo)
+     */
+    function muestraMensaje(mensaje, clase) {
+
+      if (clase == 'ok') {
+        $('mensaje').classList.add('ok');
+        $('mensaje').classList.remove('ko');
+      } else if (clase == 'ko') {
+        $('mensaje').classList.add('ko');
+        $('mensaje').classList.remove('ok');
+      }
+      $('mensaje').innerHTML = mensaje;
+      $('mensaje').classList.remove('hide');
+
+    }
+
+    /**
+     * Muestra u oculta un elemento usando
+     * una transición suave
+     */
+    function fadeInOut(id, aparecer) {
+      if (aparecer) {
+        $(id).classList.add('aparecer');
+        $(id).classList.remove('desaparecer');
+      } else {
+        $(id).classList.add('desaparecer');
+        $(id).classList.remove('aparecer');
+      }
+    }
+
+    /**
+     * Envoltorio para M.toast
+     * @param {string}  mensaje
+     * @param {number}  ms      tiempo en pantalla (milisegundos)
+     */
+    function toast(mensaje, ms = 5000) {
+      M.toast({html: mensaje, displayLength: ms, classes: 'rounded'});
+    }
+
+    /**
+     * Desactiva el formulario, dejándolo en modo de solo lectura
+     */
+    function desactivarFormulario(formId) {
+      Array.from($(formId).elements).forEach(elemento => elemento.disabled = true);
+    }
+
+    /**
+     *  Reactiva formulario, si ha sido previamente desactivado.
+     */
+    function reactivarFormulario() {
+      if (formularioReactivable) {
+        formularioReactivable = false;
+        $('mensaje').classList.add('hide');
+        $('div_btn_guardar').classList.remove('hide');
+        $('btn_guardar').disabled = false;
+      }
+    }
+    
+
+</script>

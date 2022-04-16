@@ -1,0 +1,144 @@
+<!-- Fuente de iconos de Google -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<!-- CSS Materialize -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ 
+<!-- Un poco más de CSS, se utiliza parametrización mediante scriptlets -->
+
+<style>
+
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    color: <?= colorTema ?>;
+  }
+  
+  /* Botones */
+  .btn {
+    background-color: <?= colorTema ?>;
+  }
+  
+  /* Etiquetas formulario */
+  .input-field>label {
+    color: <?= colorTema ?>;
+  }
+
+  /* Línea campos formulario al conseguir foco */
+  input:focus {
+    border-bottom: 1px solid <?!= colorTema ?> !important;
+    box-shadow: 0 1px 0 0 <?!= colorTema ?> !important;
+  }
+  
+  /* Iconos */ 
+  .input-field>.material-icons {
+     color: <?= colorTema ?>;
+  }
+
+  // Botones de opción
+  [type="radio"].with-gap:checked+span:after {
+    background-color: <?!= colorTema ?>;
+  }
+  [type="radio"].with-gap:checked+span:before,
+  [type="radio"].with-gap:checked+span:after {
+    border: 2px solid <?!= colorTema ?>;
+  }
+
+  /* Imagen de cabecera */
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: <?= anchoImagen ?>;
+  }
+
+  /* Cuerpo */
+  body {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+
+  /* Componente con pestañas*/
+  .tabs {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  }
+  .tabs .tab a{
+      color:<?!= colorTema ?>;
+  }
+  .tabs .indicator {
+    background-color: <?!= colorTema ?>;
+  }
+  .tabs .tab a:hover {
+    // Si se ajusta, en móvil el tab queda coloreado al hacer swipe
+    // background-color: #e8f0fe;
+    color: <?!= colorTema ?>;
+  }
+   .tabs .tab a.active {
+      background-color: #eceff1 !important;
+      color: <?!= colorTema ?>
+  }
+  .tabs .tab a:focus {
+    // Si se ajusta, en móvil el tab queda coloreado al hacer swipe
+    // background-color: #e8f0fe;
+    color: <?!= colorTema ?>
+   }
+
+  /* Nombre de los talleres */
+  .nombreTalleres {
+    font-size: 1.5em !important;
+  }
+
+  /* Instrucciones */
+  .instrucciones  {
+    text-align: center;
+    font-size: 1.5em;
+  }
+
+  /* Hack necesario para que las pestañas muestren todo el contenido si {swipeable: true} */
+  .tabs-content.carousel.carousel-slider .carousel-item.active{
+    position: relative;
+  }
+  .tabs-content {
+    height: auto !important;
+    min-height: 100%;
+  }
+
+  /* DIV con mensajes importantes OK/KO */
+  .mensaje {
+    font-size: 1.3em;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    margin: auto !important;
+    margin-bottom: 20px !important;
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px #999;
+    min-height: 50px;
+  }
+  .ok {
+    background-color: #26a69a;
+  }
+  .ko {
+    background-color: #dd4239;
+  }
+
+  /* Aparición / desaparición suave */
+  .desaparecer {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 1000ms, opacity 1000ms;
+}
+  .aparecer {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 1000ms;
+}
+
+input {
+   font-size: 1.5em !important;
+}
+
+</style>
