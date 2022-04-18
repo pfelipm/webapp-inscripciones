@@ -10,10 +10,17 @@
     let formularioReactivable = false;
     const tabSwipeable = true;
     let tab;
+    let innerWidthAnterior;
     let resizeTimer;
+    let camposIzq, camposDer, campoUnico;
     const $ = id => document.getElementById(id);
     window.addEventListener('DOMContentLoaded', () => {
 
+      innerWidthAnterior = window.innerWidth;
+      camposIzq = Array.from(document.getElementsByClassName('campoIzq'));
+      camposDer = Array.from(document.getElementsByClassName('campoDer'));
+      campoUnico = Array.from(document.getElementsByClassName('campoUnico'));
+      
       // Recomponer formulario
       ajustarFormulario();
 
@@ -31,15 +38,23 @@
     function ajustarFormulario() {
 
       // Se usa un temporizador de retardo para reducir la frecuencia de incialización del
-      // componente Tab, de lo contrario acaba rompiéndose y sus DIVs (grupos)
-      // se muestran apilados.
+      // componente Tab, de lo contrario puede acabar rompiéndose y sus DIVs (grupos)
+      // mostrándose apilados.
       window.clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function() {
 
-        const camposIzq = Array.from(document.getElementsByClassName('campoIzq'));
-        const camposDer = Array.from(document.getElementsByClassName('campoDer'));
-        const campoUnico = Array.from(document.getElementsByClassName('campoUnico'));
-        const nombresTalleres = Array.from(document.getElementsByClassName('nombreTalleres'));
+        // Solo se redibuja el selector con pestañas si la anchura ha aumentado
+        if (tab && window.innerWidth > innerWidthAnterior) {
+
+          tab = M.Tabs.init($('tabs'), {swipeable: tabSwipeable});
+          // No parece ser necesario
+          // tab.updateTabIndicator();
+
+        }
+
+        innerWidthAnterior = window.innerWidth;          
+          
+        // Ajustar nº de campos del formulario por fila (frontera en 600px)
         if (window.innerWidth <= 600) {
           camposIzq.forEach(c => {
             c.classList.add('s12');
@@ -72,13 +87,8 @@
           }
         }
 
-        if (tab) {
-          tab = M.Tabs.init($('tabs'), {swipeable: tabSwipeable});
-          // No parece ser necesario
-          // tab.updateTabIndicator();
-        }
-
       }, 250);
+
     }
     
     /**
