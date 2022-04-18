@@ -39,7 +39,7 @@
 
       // Se usa un temporizador de retardo para reducir la frecuencia de incialización del
       // componente Tab, de lo contrario puede acabar rompiéndose y sus DIVs (grupos)
-      // mostrándose apilados.
+      // mostrándose apilados... aun así esto occure en raras ocasiones (¿incrementar ms?).
       window.clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function() {
 
