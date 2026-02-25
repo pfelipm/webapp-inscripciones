@@ -26,7 +26,7 @@ function enviarEmail(camposForm, talleresForm) {
     talleresForm.forEach(campo => marcadores.set(`\$${campo[0].toUpperCase()}$`, obtenerDescTaller(campo[1])));
 
     let htmlPayload = hdc.getRange(PARAM.textoEmail).getValue();
-    marcadores.forEach((texto, marcador) => htmlPayload = htmlPayload.replace(marcador, texto));
+    marcadores.forEach((texto, marcador) => htmlPayload = htmlPayload.replaceAll(marcador, texto));
 
     // console.info(htmlPayload);
 
