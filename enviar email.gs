@@ -18,7 +18,9 @@ function enviarEmail(camposForm, talleresForm) {
     const marcadores = new Map();
     marcadores.set('$IMAGEN$', `<img class="cabecera" src="${hdc.getRange(PARAM.urlImagen).getValue()}"></img>`);
     camposForm.forEach(campo => marcadores.set(`\$${campo[0].toUpperCase()}$`, campo[1]));
-    talleresForm.forEach(campo => marcadores.set(`\$${campo[0].toUpperCase()}$`, obtenerDescTaller(campo[1])));
+
+    const [encabezados, ...talleres] = hdc.getSheetByName(TALLERES.hoja).getDataRange().getValues();
+    talleresForm.forEach(campo => marcadores.set(`\$${campo[0].toUpperCase()}$`, obtenerDescTaller(campo[1], talleres)));
 
     let htmlPayload = hdc.getRange(PARAM.textoEmail).getValue();
     marcadores.forEach((texto, marcador) => htmlPayload = htmlPayload.replaceAll(marcador, texto));

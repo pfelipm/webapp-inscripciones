@@ -56,10 +56,17 @@ function obtenerInsPrevias(id, clave, colId, colClave, colTaller, colEstado) {
  * @param   {string}  id  código del taller
  * @return  {string}      "nombre (grupo)"
  */
-function obtenerDescTaller(id) {
+function obtenerDescTaller(id, talleresData) {
 
-  const [encabezados, ...talleres] = SpreadsheetApp.getActive()
-    .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+  let talleres;
+  if (talleresData) {
+    talleres = talleresData;
+  } else {
+    const [encabezados, ...data] = SpreadsheetApp.getActive()
+      .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+    talleres = data;
+  }
+
   const taller = talleres.find(taller => taller[TALLERES.colId] == id);
   if (taller) return taller[TALLERES.colUrl]
     ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
