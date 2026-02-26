@@ -2,6 +2,8 @@
  * Algunas funciones auxiliares utilizadas.
  */
 
+let cacheTalleres;
+
 /**
  * Devuelte TRUE si [id, clave] aparece en la tabla de IDENTIFICACIÓN,
  * si no se facilita el valor del campo clave no se utilizará
@@ -58,12 +60,16 @@ function obtenerInsPrevias(id, clave, colId, colClave, colTaller, colEstado) {
  */
 function obtenerDescTaller(id) {
 
-  const [encabezados, ...talleres] = SpreadsheetApp.getActive()
-    .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+  if (!cacheTalleres) {
+    cacheTalleres = SpreadsheetApp.getActive()
+      .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+  }
+
+  const [encabezados, ...talleres] = cacheTalleres;
   const taller = talleres.find(taller => taller[TALLERES.colId] == id);
   if (taller) return taller[TALLERES.colUrl]
     ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
-    : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]}`;
+    : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]})`;
 
 }
 
