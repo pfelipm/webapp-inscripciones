@@ -232,9 +232,8 @@ function guardarSeleccion(formulario) {
     const hojaTalleres = hdc.getSheetByName(TALLERES.hoja);
     let nuevasInscripciones = [];
 
-    // encabezadosI/T no usados finalmente
-    const [encabezadosI, ...inscripciones] = hojaInscripciones.getDataRange().getValues().slice(INSCRIPCIONES.filDatos - 2);
-    const [encabezadosT, ...talleres] = hojaTalleres.getDataRange().getValues().slice(TALLERES.filDatos - 2);
+    const [, ...inscripciones] = hojaInscripciones.getDataRange().getValues().slice(INSCRIPCIONES.filDatos - 2);
+    const [, ...talleres] = hojaTalleres.getDataRange().getValues().slice(TALLERES.filDatos - 2);
 
     // VALIDACIÓN ADICIONAL: Comprueba que cada taller pertenece a su grupo para evitar petición manipuladas
     // Ej. talleresForm  = [ ['grupo1', 'IDT-02'], ['grupo2', 'IDT-15'], ['grupo3', 'IDT-28'] ];
