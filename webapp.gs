@@ -45,8 +45,6 @@ function cargarTalleres() {
     // Matriz de datos de talleres
     const [encabezados, ...talleres] = hdc.getSheetByName(TALLERES.hoja).getDataRange().getValues().slice(TALLERES.filDatos - 2);
 
-    // console.info(talleres.length);
-
     if (talleres.length > 0) {
 
       // Vector de grupos únicos de talleres
@@ -62,8 +60,6 @@ function cargarTalleres() {
       let htmlPayload = htmlSelectorWrapper.replace('__SELECTORES__',
         grupos.reduce((html, grupo, indice) => html + htmlSelector.replace('__IDGRUPO__', `grupo${indice + 1}`).replace('__GRUPO__', grupo), ''))
         .replaceAll('__ICONO__', icono);
-
-      // console.info(htmlPayload);
 
       // [2] DIVs
       const htmlTabWrapper = '<div id="__GRUPO__" class="col s12">__LISTATALLERES__</div>';
@@ -91,8 +87,6 @@ function cargarTalleres() {
         );
       }, htmlPayload);
 
-      // console.info(htmlPayload);
-
       return htmlPayload;
 
     } else return '<p class="center-align red-text text-accent-3">😱 No se han cargado talleres en el formulario (no deberías estar viendo esto) 😱</p>';
@@ -113,9 +107,6 @@ function cargarTalleres() {
  * @return  {Object}              {estado, mensaje, previas} estado = ok | repetido | cerrado | otros // previas = true | false | undefined
  */
 function guardarSeleccion(formulario) {
-
-  // Solo para testear sin necesidad de usar la interfaz web
-  // formulario = { grupo2: 'IDT-14', grupo1: 'IDT-01', grupo3: 'IDT-40', campo1: '333333', campo2: '11111111', campo3: 'aa@aa.es' };
 
   try {
 
@@ -220,9 +211,6 @@ function guardarSeleccion(formulario) {
     // Fallaremos en xx ms con mensaje de error
     const semaforo = LockService.getScriptLock();
     semaforo.waitLock(hdc.getRange(PARAM.segMaxLock).getValue() * 1000);
-    // Para pruebas de concurrencia:
-    // semaforo.waitLock(3000);
-    // Utilities.sleep(5000);
 
     // *************************************************************
     // Inicio del bloque de código que se ejecuta en exclusión mutua
