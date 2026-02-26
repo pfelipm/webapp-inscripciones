@@ -317,7 +317,7 @@ function guardarSeleccion(formulario) {
     // Fin del bloque de código que se ejecuta en exclusión mutua
     // *************************************************************
 
-    semaforo.releaseLock;
+    semaforo.releaseLock();
 
     // Enviar email, si opción activada!!!!
     if (hdc.getRange(PARAM.enviarEmail).getValue()) enviarEmail(camposForm, talleresForm);
