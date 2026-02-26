@@ -138,3 +138,17 @@ function previsualizarEmail() {
   }
 
 }
+/**
+ * Escapes HTML characters in a string to prevent XSS.
+ * @param {string} text The string to escape.
+ * @return {string} The escaped string.
+ */
+function escapeHtml(text) {
+  if (!text) return text;
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
