@@ -16,7 +16,7 @@ function enviarEmail(camposForm, talleresForm) {
     // talleresForm = [ ['grupo1', 'IDT-02'], ['grupo2', 'IDT-15'], ['grupo3', 'IDT-28'] ];
     
     // formulario = { grupo2: 'IDT-15', grupo1: 'IDT-02', grupo3: 'IDT-28', campo1: '111111', campo2: '11111111', campo3: 'pablo.felip@gedu.es' };
-    campoEmail = hdc.getRange(PARAM.campoEmail).getValue().toLowerCase().replaceAll(/\s/g, '');
+    const campoEmail = hdc.getRange(PARAM.campoEmail).getValue().toLowerCase().replaceAll(/\s/g, '');
 
     // Prepara el contenido del email
 
