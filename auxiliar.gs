@@ -55,22 +55,35 @@ function obtenerInsPrevias(id, clave, colId, colClave, colTaller, colEstado) {
 /**
  * Devuelve una cadena formateada que contiene el nombre
  * y el grupo del taller cuyo código se pasa como parámetro.
- * @param   {string}  id  código del taller
- * @return  {string}      "nombre (grupo)"
+ * @param   {string}  id            código del taller
+ * @param   {Array}   talleresData  (opcional) datos de los talleres ya cargados
+ * @return  {string}                "nombre (grupo)"
  */
-function obtenerDescTaller(id) {
+function obtenerDescTaller(id, talleresData) {
+  
+  // 1. Priorizamos el parámetro, si no, usamos la caché global
+  let datosParaBusqueda = talleresData;
 
-  if (!cacheTalleres) {
-    cacheTalleres = SpreadsheetApp.getActive()
-      .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+  if (!datosParaBusqueda) {
+    if (!cacheTalleres) {
+      // Si la caché está vacía, leemos de la hoja por primera y única vez
+      const [, ...data] = SpreadsheetApp.getActive()
+        .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+      cacheTalleres = data;
+    }
+    datosParaBusqueda = cacheTalleres;
   }
-
-  const [encabezados, ...talleres] = cacheTalleres;
-  const taller = talleres.find(taller => taller[TALLERES.colId] == id);
-  if (taller) return taller[TALLERES.colUrl]
-    ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
-    : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]})`;
-
+  
+  // 2. Realizamos la búsqueda en el conjunto de datos final
+  const taller = datosParaBusqueda.find(t => t[TALLERES.colId] == id);
+  
+  if (taller) {
+    return taller[TALLERES.colUrl] 
+      ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
+      : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]})`;
+  }
+  
+  return '';
 }
 
 /**
