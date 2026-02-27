@@ -2,6 +2,8 @@
  * Algunas funciones auxiliares utilizadas.
  */
 
+let cacheTalleres;
+
 /**
  * Devuelte TRUE si [id, clave] aparece en la tabla de IDENTIFICACIÓN,
  * si no se facilita el valor del campo clave no se utilizará
@@ -53,25 +55,35 @@ function obtenerInsPrevias(id, clave, colId, colClave, colTaller, colEstado) {
 /**
  * Devuelve una cadena formateada que contiene el nombre
  * y el grupo del taller cuyo código se pasa como parámetro.
- * @param   {string}  id  código del taller
- * @return  {string}      "nombre (grupo)"
+ * @param   {string}  id            código del taller
+ * @param   {Array}   talleresData  (opcional) datos de los talleres ya cargados
+ * @return  {string}                "nombre (grupo)"
  */
 function obtenerDescTaller(id, talleresData) {
+  
+  // 1. Priorizamos el parámetro, si no, usamos la caché global
+  let datosParaBusqueda = talleresData;
 
-  let talleres;
-  if (talleresData) {
-    talleres = talleresData;
-  } else {
-    const [encabezados, ...data] = SpreadsheetApp.getActive()
-      .getSheetByName(TALLERES.hoja).getDataRange().getValues();
-    talleres = data;
+  if (!datosParaBusqueda) {
+    if (!cacheTalleres) {
+      // Si la caché está vacía, leemos de la hoja por primera y única vez
+      const [, ...data] = SpreadsheetApp.getActive()
+        .getSheetByName(TALLERES.hoja).getDataRange().getValues();
+      cacheTalleres = data;
+    }
+    datosParaBusqueda = cacheTalleres;
   }
-
-  const taller = talleres.find(taller => taller[TALLERES.colId] == id);
-  if (taller) return taller[TALLERES.colUrl]
-    ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
-    : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]}`;
-
+  
+  // 2. Realizamos la búsqueda en el conjunto de datos final
+  const taller = datosParaBusqueda.find(t => t[TALLERES.colId] == id);
+  
+  if (taller) {
+    return taller[TALLERES.colUrl] 
+      ? `<a href="${taller[TALLERES.colUrl]}">${taller[TALLERES.colNombre]}</a> (${taller[TALLERES.colGrupo]})`
+      : `${taller[TALLERES.colNombre]} (${taller[TALLERES.colGrupo]})`;
+  }
+  
+  return '';
 }
 
 /**
@@ -144,4 +156,18 @@ function previsualizarEmail() {
     hdc.toast('No ha sido posible generar una vista previa, revisa el código HTML del texto del mensaje.', '👎  HTML inválido', 10);
   }
 
+}
+/**
+ * Escapes HTML characters in a string to prevent XSS.
+ * @param {string} text The string to escape.
+ * @return {string} The escaped string.
+ */
+function escapeHtml(text) {
+  if (!text) return text;
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
