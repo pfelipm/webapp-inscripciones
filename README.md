@@ -1,5 +1,7 @@
 # Webapp de inscripción a talleres
 
+![Formulario de selección de talleres](assets/Formulario-de-selección-de-talleres.png)
+
 Una aplicación web altamente parametrizable construida con **Google Apps Script** para gestionar inscripciones a eventos y talleres de forma eficiente, segura y sin necesidad de conocimientos de programación para su gestión diaria.
 
 Este proyecto permite transformar una hoja de cálculo de Google en un completo sistema de reservas con control de aforo en tiempo real, validación de identidad y notificaciones automáticas por correo electrónico.
