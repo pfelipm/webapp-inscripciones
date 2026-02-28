@@ -83,7 +83,7 @@ Para poner en marcha tu propia instancia de la webapp de inscripciones, sigue es
 4.  **Autorizar el script:** Haz clic en **Implementar**. Se te pedirá que autorices el script para acceder a tus hojas de cálculo y enviar correos en tu nombre. 
 5.  **Obtener la URL:** Una vez finalizado, copia la **URL de la aplicación web**. Esta es la dirección que deberás facilitar a los asistentes para que realicen su inscripción.
 6.  **Configuración final en la hoja:** Antes de compartir la URL, asegúrate de:
-    - Completar todos los parámetros de la pestaña **Configuración** (periodos de apertura, imagen, textos, etc.).
+    - Completar todos los parámetros de la pestaña **Configuración** (periodos de apertura, imagen, textos, etc.). Muchas celdas de esta pestaña contienen **notas con información contextual** para ayudarte en la configuración.
     - Dar de alta los grupos y códigos en la pestaña **Talleres**.
     - Configurar la pestaña **Identificación** si en la configuración has activado el check de **"Validar contra tabla IDENTIFICACIÓN"**.
 
