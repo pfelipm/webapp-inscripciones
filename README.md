@@ -50,7 +50,7 @@ El papel de esta hoja es fundamental, ya que permite:
 
 Este proyecto ha sido creado y es mantenido por **Pablo Felip** ([LinkedIn](https://www.linkedin.com/in/pfelipm/) | [GitHub](https://github.com/pfelipm)).
 
-Diseñado para **GEG Spain** / [**Transformación Educativa**](https://transformacioneducativa.es/).
+Diseñado para [**GEG Spain** / **Transformación Educativa**](https://transformacioneducativa.es/).
 
 ## 📄 Licencia
 
