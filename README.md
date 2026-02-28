@@ -34,6 +34,8 @@ El papel de esta hoja es fundamental, ya que permite:
 
 ## 🛠️ Guía de la pestaña Configuración
 
+![Pestaña de configuración](assets/pestaña-configuración.png)
+
 La potencia de esta webapp reside en su capacidad de ser gestionada íntegramente desde la pestaña **Configuración** de la hoja de cálculo. A continuación se detallan los elementos parametrizables:
 
 ### **1. Lógica de disponibilidad (Apertura y Cierre)**
@@ -66,6 +68,22 @@ Permite configurar hasta **4 campos de identificación** con:
     - `$IMAGEN$`: Imagen de cabecera.
     - `$CAMPO1$`, `$CAMPO2$`...: Datos introducidos por el usuario.
     - `$GRUPO1$`, `$GRUPO2$`...: Nombres de los talleres seleccionados.
+
+## 📋 Guía de la pestaña Talleres
+
+![Pestaña de talleres](assets/pestaña-talleres.png)
+
+En esta pestaña se definen los talleres disponibles. Es fundamental que cada taller tenga un **ID único** y esté asignado a un **Grupo** (que representará una franja horaria o pestaña en la webapp). 
+
+Los campos clave son:
+- **Grupo:** Determina en qué pestaña aparecerá el taller en la webapp.
+- **Código (ID):** Identificador interno único del taller.
+- **Nombre:** Título del taller que verán los usuarios.
+- **URL:** Permite introducir la dirección web del taller (u otro destino) para que los asistentes puedan consultar más detalles antes de inscribirse.
+- **Aforo:** Número máximo de plazas disponibles.
+- **Ocupadas:** Campo que la webapp actualiza automáticamente tras cada inscripción (no debe editarse manualmente).
+- **Disponibles:** Columna calculada automáticamente mediante fórmula para conocer el estado actual de plazas.
+- **Columna H (Visual):** Utiliza la maravillosa función [**SPARKLINE**](https://pablofelip.online/minigraficos-multicolor-sparkline) para mostrar un minigráfico del estado de ocupación de cada taller de forma visual y rápida.
 
 ## 🚀 Instrucciones de despliegue
 
