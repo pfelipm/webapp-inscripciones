@@ -23,7 +23,7 @@ function doGet(e) {
 
   const html = formularioWeb.evaluate().setTitle(hdc.getRange(PARAM.textoEncabezado).getValue());
 
-  return HtmlService.createHtmlOutput(html)
+  return html
     // Resuelve el problema de zoom excesivo al llevar foco a algún campo del formulario en algunos Android,
     // initial-scale=0.80 permite que se vean totalmente los nombres de los grupos en las pestañas.
     .addMetaTag('viewport', 'width=device-width, initial-scale=0.80, user-scalable=no')   
