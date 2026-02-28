@@ -5,9 +5,9 @@
 Una aplicación web altamente parametrizable construida con **Google Apps Script** para gestionar inscripciones a eventos y talleres de forma eficiente, segura y sin necesidad de conocimientos de programación para su gestión diaria.
 
 > [!NOTE]
-> **Dato histórico:** Este proyecto fue desarrollado originalmente en 2022 de forma totalmente manual, utilizando exclusivamente neuronas biológicas y cafeína (¡sin ayuda de ninguna IA generativa, que en aquel entonces todavía estaban en el parvulario de las IAs! 👶). 
+> **Dato histórico:** Este proyecto fue desarrollado originalmente en 2022 de forma totalmente manual, utilizando exclusivamente neuronas biológicas y muchos cafés con hielo ☕🧊 (¡sin ayuda de ninguna IA generativa, que en aquel entonces todavía estaban en el parvulario de las IAs! 👶). 
 > 
-> Se creó ad hoc para el encuentro [**GEG Volvemos 10x**](https://sites.google.com/gedu.es/geg/encuentros/volvemos-10x), celebrado en **Valencia en mayo de 2022**; un encuentro excepcional que supuso el reencuentro de la comunidad GEG Spain tras la época más dura de la pandemia COVID de 2020.
+> Se creó ad hoc para el encuentro [**GEG Volvemos 10x**](https://sites.google.com/gedu.es/geg/encuentros/volvemos-10x), celebrado en **Valencia en mayo de 2022** 🥘; un encuentro excepcional que supuso el reencuentro de la comunidad GEG Spain tras la época más dura de la pandemia COVID de 2020 🫂.
 
 Este proyecto permite transformar una hoja de cálculo de Google en un completo sistema de reservas con control de aforo en tiempo real, validación de identidad y notificaciones automáticas por correo electrónico.
 
