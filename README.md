@@ -67,6 +67,25 @@ Permite configurar hasta **4 campos de identificación** con:
     - `$CAMPO1$`, `$CAMPO2$`...: Datos introducidos por el usuario.
     - `$GRUPO1$`, `$GRUPO2$`...: Nombres de los talleres seleccionados.
 
+## 🚀 Instrucciones de despliegue
+
+Para poner en marcha tu propia instancia de la webapp de inscripciones, sigue estos pasos:
+
+1.  **Copiar la plantilla:** Haz una copia de la [**plantilla de gestión de inscripciones**](https://docs.google.com/spreadsheets/d/1wG2IB0GSGhkdiJJph-iP1wWT5OlQBYF4aWddZ67XluI/edit?usp=sharing) en tu unidad de Google Drive (**Archivo > Hacer una copia**). Esta plantilla ya contiene una copia actualizada del código de este repositorio.
+2.  **Abrir el editor de scripts:** En tu nueva hoja de cálculo, ve al menú **Extensiones > Apps Script**. Se abrirá el editor con todos los archivos `.gs` y `.html` del proyecto.
+3.  **Configurar el despliegue:**
+    - Haz clic en el botón azul **Implementar > Nueva implementación**.
+    - Selecciona el tipo de implementación **Aplicación web** (haciendo clic en el icono del engranaje si no aparece).
+    - Configura los parámetros:
+        - **Descripción:** Ej. "Despliegue inicial v1".
+        - **Ejecutar como:** "Yo" (tu cuenta de Google).
+        - **Quién tiene acceso:** "Cualquier persona" (esto permite que los asistentes accedan al formulario sin complicaciones, incluso si no tienen cuenta de Google, si así lo deseas).
+4.  **Autorizar el script:** Haz clic en **Implementar**. Se te pedirá que autorices el script para acceder a tus hojas de cálculo y enviar correos en tu nombre. 
+5.  **Obtener la URL:** Una vez finalizado, copia la **URL de la aplicación web**. Esta es la dirección que deberás facilitar a los asistentes para que realicen su inscripción.
+
+> [!TIP]
+> Recuerda que tras cualquier cambio en el código (archivos .gs o .html), deberás realizar una **"Nueva implementación"** (o editar la actual creando una nueva versión) para que los cambios se reflejen en la URL pública.
+
 ## 💻 Requisitos técnicos
 
 - Cuenta de Google (Personal o Workspace).
