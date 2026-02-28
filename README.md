@@ -68,6 +68,9 @@ Permite configurar hasta **4 campos de identificación** con:
     - `$IMAGEN$`: Imagen de cabecera.
     - `$CAMPO1$`, `$CAMPO2$`...: Datos introducidos por el usuario.
     - `$GRUPO1$`, `$GRUPO2$`...: Nombres de los talleres seleccionados.
+- **Herramientas de validación:** Desde el menú del script o botones personalizados en la hoja, puedes:
+    - **Vista previa:** Previsualizar el mensaje de confirmación antes de enviarlo.
+    - **Validación HTML:** Comprobar que la sintaxis HTML de la plantilla no contiene errores que puedan romper la webapp.
 
 ## 📋 Guía de la pestaña Talleres
 
