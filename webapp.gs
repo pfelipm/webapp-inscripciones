@@ -26,7 +26,7 @@ function doGet(e) {
   return HtmlService.createHtmlOutput(html)
     // Resuelve el problema de zoom excesivo al llevar foco a algún campo del formulario en algunos Android,
     // initial-scale=0.80 permite que se vean totalmente los nombres de los grupos en las pestañas.
-    .addMetaTag('viewport', 'meta name="viewport" content="width="width=device-width", initial-scale=0.80, user-scalable=no"')   
+    .addMetaTag('viewport', 'width=device-width, initial-scale=0.80, user-scalable=no')   
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 
 }
