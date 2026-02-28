@@ -14,6 +14,17 @@ Este proyecto permite transformar una hoja de cálculo de Google en un completo 
 - **Notificaciones por email:** Envío automático de confirmaciones con los talleres seleccionados mediante plantillas HTML personalizables.
 - **Diseño responsive:** Interfaz basada en Materialize CSS optimizada para dispositivos móviles y escritorio.
 
+## 📊 Plantilla de Google Sheets
+
+La aplicación se apoya en una hoja de cálculo que actúa tanto de base de datos como de panel de control. Puedes obtener una copia de la plantilla necesaria en el siguiente enlace:
+
+👉 [**Plantilla de gestión de inscripciones**](https://docs.google.com/spreadsheets/d/1wG2IB0GSGhkdiJJph-iP1wWT5OlQBYF4aWddZ67XluI/edit?usp=sharing)
+
+El papel de esta hoja es fundamental, ya que permite:
+- **Configurar la webapp:** Sin editar una sola línea de código, puedes cambiar el aspecto visual, los textos de ayuda, las validaciones de campos y los tiempos de apertura del formulario.
+- **Gestionar el catálogo de talleres:** Añadir, editar o eliminar talleres y grupos horaria, así como definir sus aforos.
+- **Centralizar los datos:** Recibir las inscripciones en tiempo real y gestionar la lista de usuarios autorizados.
+
 ## 🛠️ Configuración y uso
 
 1. **Estructura de la hoja de cálculo:** La aplicación requiere pestañas específicas denominadas `Configuración`, `Talleres`, `Inscripciones` e `Identificación`.
