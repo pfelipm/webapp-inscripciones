@@ -27,16 +27,40 @@ El papel de esta hoja es fundamental, ya que permite:
 - **Gestionar el catálogo de talleres:** Añadir, editar o eliminar talleres y grupos horaria, así como definir sus aforos.
 - **Centralizar los datos:** Recibir las inscripciones en tiempo real y gestionar la lista de usuarios autorizados.
 
-## 🛠️ Configuración y uso
+## 🛠️ Guía de la pestaña Configuración
 
-1. **Estructura de la hoja de cálculo:** La aplicación requiere pestañas específicas denominadas `Configuración`, `Talleres`, `Inscripciones` e `Identificación`.
-2. **Parametrización:** Desde la hoja `Configuración` se pueden definir:
-    - Periodos de apertura y cierre automáticos.
-    - Imagen y textos de encabezado.
-    - Colores del tema (Material Design).
-    - Expresiones regulares para validar campos de entrada (DNI, Email, códigos, etc.).
-3. **Gestión de talleres:** En la hoja `Talleres` se definen los nombres, grupos (franjas horarias), aforo máximo y enlaces a fichas informativas.
-4. **Despliegue:** Se debe desplegar como **Aplicación web** con acceso para "Cualquier persona" (o restringido a un dominio Workspace).
+La potencia de esta webapp reside en su capacidad de ser gestionada íntegramente desde la pestaña **Configuración** de la hoja de cálculo. A continuación se detallan los elementos parametrizables:
+
+### **1. Lógica de disponibilidad (Apertura y Cierre)**
+El acceso al formulario se rige por tres estados jerárquicos:
+- **Modo mantenimiento (H18):** Es la prioridad absoluta. Si se activa la casilla, la webapp muestra un **mensaje fijo** (`🛠️ El formulario está temporalmente desactivado por labores de mantenimiento 🛠️`) y bloquea cualquier acción.
+- **Control por periodo (H7, E7, G7):** Si el mantenimiento está desactivado y esta casilla es `TRUE`, el formulario se abrirá y cerrará automáticamente en las fechas y horas indicadas en **Apertura** y **Cierre**.
+- **Interruptor manual (A7):** Si el control por periodo es `FALSE`, el formulario se abre o cierra manualmente marcando esta casilla.
+- **Mensajes dinámicos:** 
+    - **Texto abierto (B16):** Mensaje de bienvenida visible cuando el formulario está activo.
+    - **Texto cerrado (B18):** Mensaje que aparece cuando el formulario está cerrado (ya sea por fecha o por el interruptor manual).
+
+### **2. Cabecera y Estética**
+- **Imagen (B12) y Anchura (I12):** URL de la imagen de cabecera y su tamaño relativo (ej. 50%).
+- **Título (B10) y Tamaño (G10):** Texto del encabezado y su nivel HTML (1-6).
+- **Color del tema (I10):** Código hexadecimal (ej. `#3369e8`) que personaliza botones, títulos e iconos automáticamente.
+
+### **3. Campos de Identificación (Filas 20-25)**
+Permite configurar hasta **4 campos de identificación** con:
+- **Etiquetas e Iconos:** Nombres de los campos e iconos de Material Design.
+- **Validación avanzada (ExpReg):** Puedes obligar a que el usuario introduzca datos con un formato específico (DNI, Email, código alfanumérico) y definir un mensaje de error personalizado.
+
+### **4. Política de Inscripción y Talleres**
+- **Gestión de duplicados (D38):** Permite configurar si un usuario puede inscribirse una sola vez o si puede modificar una selección previa (actualización).
+- **Validación de identidad (G39):** Interruptor para exigir que los datos del usuario existan previamente en la pestaña `Identificación`.
+- **Visualización de talleres (Filas 31-35):** Iconos de las pestañas horarias, límite de caracteres en nombres y campo para enlazar fichas técnicas.
+
+### **5. Notificaciones por Email**
+- **Envío automático (B45):** Activa o desactiva la confirmación tras la inscripción.
+- **Cuerpo del mensaje (B50):** Plantilla HTML personalizable que admite marcadores dinámicos:
+    - `$IMAGEN$`: Imagen de cabecera.
+    - `$CAMPO1$`, `$CAMPO2$`...: Datos introducidos por el usuario.
+    - `$GRUPO1$`, `$GRUPO2$`...: Nombres de los talleres seleccionados.
 
 ## 💻 Requisitos técnicos
 
