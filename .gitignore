@@ -1,0 +1,11 @@
+# Folder not for sync
+Plantilla pública/
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Local config
+.clasp.json
+.clasprc.json
+.gemini/

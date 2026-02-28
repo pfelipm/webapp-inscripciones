@@ -1,0 +1,17 @@
+# Folder not for sync
+Plantilla pública/
+
+# Local git/node
+.git/
+node_modules/
+package-lock.json
+package.json
+
+# Local config
+.clasp.json
+.clasprc.json
+.gitignore
+.gemini/
+README.md
+assets/
+LICENSE
