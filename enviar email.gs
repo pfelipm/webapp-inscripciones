@@ -42,15 +42,22 @@ function enviarEmail(camposForm, talleresForm) {
     html.colorTema = hdc.getRange(PARAM.colorTema).getValue();
     html.htmlPayload = htmlPayload;
 
+    // Preparación de opciones de envío
+    const emailOpciones = {
+      htmlBody: html.evaluate().getContent(),
+      name: hdc.getRange(PARAM.remitente).getValue()
+    };
+
+    // Añade reply-to si se ha configurado en la hoja
+    const responderA = hdc.getRange(PARAM.responderA).getValue();
+    if (responderA) emailOpciones.replyTo = responderA;
+
     // Ejecución del envío
     MailApp.sendEmail(
       camposForm.find(campo => campo[0] == campoEmail)[1],
       hdc.getRange(PARAM.asunto).getValue(),
       'Debes usar un cliente de correo compatible con HTML para visualizar este mensaje.',
-      { 
-        htmlBody: html.evaluate().getContent(), 
-        name: hdc.getRange(PARAM.remitente).getValue() 
-      }
+      emailOpciones
     );
 
     return true;

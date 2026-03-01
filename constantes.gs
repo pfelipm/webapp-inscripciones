@@ -48,7 +48,8 @@ const PARAM = {
   remitente: H_CONFIG + '!B47',
   asunto: H_CONFIG + '!E47',
   campoEmail: H_CONFIG + '!H47',
-  textoEmail: H_CONFIG + '!B50'
+  responderA: H_CONFIG + '!B49',
+  textoEmail: H_CONFIG + '!B52'
 };
 const TALLERES = {
   hoja: 'Talleres',
