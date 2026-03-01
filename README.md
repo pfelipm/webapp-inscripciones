@@ -64,7 +64,10 @@ Permite configurar hasta **4 campos de identificación** con:
 
 ### **5. Notificaciones por Email**
 - **Envío automático (B45):** Activa o desactiva la confirmación tras la inscripción.
-- **Cuerpo del mensaje (B50):** Plantilla HTML personalizable que admite marcadores dinámicos:
+- **Nombre remitente (B47) y Asunto (E47):** Nombre y título del correo que recibirá el usuario.
+- **Responder a (B49):** Dirección de correo que recibirá las respuestas si el usuario contesta al email de confirmación. Ideal para redirigir consultas a un Grupo de Google o cuenta de soporte.
+- **Campo email (H47):** Indica cuál de los campos del formulario (ej. Campo 3) contiene el email del usuario donde se enviará la confirmación.
+- **Cuerpo del mensaje (B52):** Plantilla HTML personalizable que admite marcadores dinámicos:
     - `$IMAGEN$`: Imagen de cabecera.
     - `$CAMPO1$`, `$CAMPO2$`...: Datos introducidos por el usuario.
     - `$GRUPO1$`, `$GRUPO2$`...: Nombres de los talleres seleccionados.
